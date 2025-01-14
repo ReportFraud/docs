@@ -1,0 +1,680 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Fraud Report API",
+    "description": "API to report suspected activity",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api-staging.reporta.ng/api/v1/external"
+    }
+  ],
+  "paths": {
+    "/reports": {
+      "post": {
+        "description": "Creates a fraud report",
+        "requestBody": {
+          "description": "Details of the fraud report",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fraudType": {
+                    "type": "string",
+                    "description": "Type of suspicious activity",
+                    "enum": [
+                      "hacker",
+                      "identity_theft",
+                      "money_mule",
+                      "suspicious_pep",
+                      "sanctioned/ofac",
+                      "theft",
+                      "fraudulent_loan",
+                      "social_engineering",
+                      "other",
+                      "romance_fraud",
+                      "land_property_scams"
+                    ]
+                  },
+                  "fraudReason": {
+                    "type": "string",
+                    "description": "Reason for reporting the suspicious activity",
+                    "maxLength": 2000,
+                    "minLength": 50,
+                    "example": "Hacked into a user's account and moved funds to his account in another bank"
+                  },
+                  "attachments": {
+                    "type": "array",
+                    "description": "Maximum of three links to uploaded files. Use the upload endpoint to upload the files and include the returned URLs here.",
+                    "items": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "maxItems": 3
+                  },
+                  "identifiers": {
+                    "type": "array",
+                    "description": "Array of identifiers to describe the fraud",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "description": "Identifier label",
+                          "enum": [
+                            "account",
+                            "bvn",
+                            "nin",
+                            "drivers_license",
+                            "international_passport",
+                            "email",
+                            "phone",
+                            "account_name",
+                            "social_handle"
+                          ],
+                          "example": "bvn"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Identifier value",
+                          "example": "12345678901"
+                        }
+                      },
+                      "required": ["label", "value"]
+                    }
+                  },
+                  "showUploaderInfo": {
+                    "type": "string",
+                    "enum": ["true", "false"],
+                    "description": "Whether to show the uploader information, defaults to false"
+                  }
+                },
+                "required": ["fraudType", "fraudReason", "identifiers"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fraud report created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the report was successfully created"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Response message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Unique ID of the created report",
+                          "format": "uuid"
+                        },
+                        "listingStatus": {
+                          "type": "string",
+                          "description": "Status of the report",
+                          "enum": ["listed", "unlisted"]
+                        },
+                        "exitedListAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Timestamp of when the report was exited from the list",
+                          "format": "date-time"
+                        },
+                        "exitListReason": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Reason for exiting the list"
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "Status of the report, can be published or draft. Default is published",
+                          "enum": ["published", "draft"]
+                        },
+                        "fraudType": {
+                          "type": "string",
+                          "description": "Type of fraud reported"
+                        },
+                        "fraudReason": {
+                          "type": "string",
+                          "description": "Reason for reporting the suspicious activity"
+                        },
+                        "reportedBy": {
+                          "type": "string",
+                          "description": "ID of the user who reported the suspicious activity"
+                        },
+                        "companyId": {
+                          "type": "string",
+                          "description": "ID of the company that reported the suspicious activity"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp when the report was last updated"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp when the report was created"
+                        },
+                        "identifiers": {
+                          "type": "array",
+                          "description": "List of encrypted identifiers",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "description": "Identifier label"
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "Encrypted identifier value"
+                              }
+                            },
+                            "required": ["label", "value"]
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "listingStatus",
+                        "exitedListAt",
+                        "exitListReason",
+                        "status",
+                        "fraudType",
+                        "fraudReason",
+                        "attachments",
+                        "identifiers",
+                        "showUploaderInfo",
+                        "companyId",
+                        "updatedAt",
+                        "createdAt"
+                      ]
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/reports/submissions": {
+      "get": {
+        "summary": "Fetches reports submissions",
+        "description": "Fetch a list of reports that have been submitted, with their details including fraud type, reason, status, and associated identifiers.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page of results to fetch (default is 1).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of results per page (default is 10).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched reports",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "companyId": {
+                                "type": "string"
+                              },
+                              "userId": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "listingStatus": {
+                                "type": "string"
+                              },
+                              "exitedListAt": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "exitListReason": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "fraudType": {
+                                "type": "string"
+                              },
+                              "fraudReason": {
+                                "type": "string"
+                              },
+                              "showUploaderInfo": {
+                                "type": "boolean"
+                              },
+                              "attachments": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": ["published", "draft"]
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "reportingCompany": {
+                                "type": "object",
+                                "properties": {
+                                  "businessName": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "identifiers": {
+                                "type": "array",
+                                "description": "List of encrypted identifiers",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "label": {
+                                      "type": "string",
+                                      "description": "Identifier label"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "description": "Encrypted identifier value"
+                                    }
+                                  },
+                                  "required": ["label", "value"]
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "meta": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/reports/submissions/{id}": {
+      "get": {
+        "description": "Get a submission by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of submission to get",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "companyId": {
+                              "type": "string"
+                            },
+                            "userId": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "listingStatus": {
+                              "type": "string"
+                            },
+                            "exitedListAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "exitListReason": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "fraudType": {
+                              "type": "string"
+                            },
+                            "fraudReason": {
+                              "type": "string"
+                            },
+                            "showUploaderInfo": {
+                              "type": "boolean"
+                            },
+                            "attachments": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "status": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "reportingCompany": {
+                              "type": "object",
+                              "properties": {
+                                "businessName": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "identifiers": {
+                              "$ref": "#/components/schemas/EncryptedIdentifiers"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/reports/submissions/{id}/decode": {
+      "get": {
+        "description": "Get a submission by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of submission to get",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "report": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "companyId": {
+                              "type": "string"
+                            },
+                            "userId": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "listingStatus": {
+                              "type": "string"
+                            },
+                            "exitedListAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "exitListReason": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "fraudType": {
+                              "type": "string"
+                            },
+                            "fraudReason": {
+                              "type": "string"
+                            },
+                            "showUploaderInfo": {
+                              "type": "boolean"
+                            },
+                            "attachments": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "status": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "reportingCompany": {
+                              "type": "object",
+                              "properties": {
+                                "businessName": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "identifiers": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/reports/{id}/unlist": {
+      "put": {
+        "description": "Unlist a report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of submission to unlist",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "nullable": true
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "x-api-key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    },
+    "schemas": {}
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Meta Data API",
+    "description": "API to fetch a list of banks",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api-staging.reporta.ng/api/v1/meta-data"
+    }
+  ],
+  "paths": {
+    "/banks": {
+      "get": {
+        "description": "Fetches a list of banks",
+        "responses": {
+          "200": {
+            "description": "Banks fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Indicates if the request was successful"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Banks fetched successfully",
+                      "description": "Response message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "entity": {
+                          "type": "array",
+                          "description": "List of banks",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Unique identifier for the bank"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Name of the bank"
+                              },
+                              "slug": {
+                                "type": "string",
+                                "description": "URL-friendly version of the bank name"
+                              },
+                              "code": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "Bank code, if available"
+                              }
+                            },
+                            "required": ["id", "name", "slug"]
+                          }
+                        }
+                      },
+                      "required": ["entity"]
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Banks not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Indicates if the request was successful"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Route not found",
+                      "description": "Response message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "nullable": true,
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

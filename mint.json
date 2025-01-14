@@ -1,42 +1,36 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Reporta API Documentation",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#356EDC",
+    "light": "#356EDC",
+    "dark": "#356EDC",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#356EDC",
+      "to": "#0891B2"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
+  "topbarLinks": [],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://reporta.ng/login?for=corporate"
   },
   "tabs": [
     {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "Guides",
+      "url": "guides"
     }
   ],
   "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
     {
       "name": "Community",
       "icon": "slack",
@@ -45,42 +39,45 @@
     {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://reporta.ng/blog"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
+      "group": "General",
+      "pages": ["introduction", "response-codes", "api-response"]
     },
     {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
+      "group": "Get Started",
+      "pages": ["register", "create-api-key", "fund-wallet"]
     },
     {
       "group": "API Documentation",
+      "pages": ["api-reference/introduction"]
+    },
+    {
+      "group": "Report",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/report/create-report",
+        "api-reference/report/get-submissions",
+        "api-reference/report/get-submission",
+        "api-reference/report/update-report",
+        "api-reference/report/unlist-report",
+        "api-reference/report/decode-submission",
+        "api-reference/report/search"
       ]
     },
     {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
+      "group": "Meta Data",
+      "pages": ["api-reference/meta-data/get-banks"]
+    },
+    {
+      "group": "File Upload",
+      "pages": ["api-reference/file-upload/upload", "api-reference/file-upload/delete"]
+    },
+    {
+      "group": "Guides",
+      "pages": ["guides/introduction", "guides/search", "guides/faq"]
     }
   ],
   "footerSocials": {
