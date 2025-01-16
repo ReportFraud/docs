@@ -1,3 +1,46 @@
 ---
 title: 'Response Codes'
+description: "Learn about our API's response codes and their meanings. These status codes help you understand the result of your API requests and how to handle different scenarios."
 ---
+
+<CardGroup cols={2}>
+  <Card title="200 OK" icon="check" color="#4CAF50">
+    Standard success response. The request was successfully processed.
+  </Card>
+  
+  <Card title="201 Created" icon="plus" color="#4CAF50">
+    The request succeeded and a new resource was created.
+  </Card>
+
+  <Card title="204 No Content" icon="circle-check" color="#4CAF50">
+    The request succeeded but no content needs to be returned.
+  </Card>
+
+  <Card title="400 Bad Request" icon="xmark" color="#ff9800">
+    The request was invalid, often due to missing or invalid parameters.
+  </Card>
+
+  <Card title="401 Unauthorized" icon="lock" color="#ff9800">
+    Authentication is required or the provided credentials failed.
+  </Card>
+
+  <Card title="403 Forbidden" icon="ban" color="#ff9800">
+    The client doesn't have permission to perform this request.
+  </Card>
+
+  <Card title="404 Not Found" icon="magnifying-glass" color="#ff9800">
+    The requested resource could not be found on the server.
+  </Card>
+
+  <Card title="409 Conflict" icon="code-merge" color="#ff9800">
+    The request conflicts with the current state of the server.
+  </Card>
+
+  <Card title="429 Too Many Requests" icon="hand" color="#ff9800">
+    You've exceeded the allowed number of requests. Please try again later.
+  </Card>
+
+  <Card title="5XX Server Errors" icon="server" color="#f44336">
+    Something went wrong on our servers. This includes 500, 502, and 503 errors. Please contact support if the issue persists.
+  </Card>
+</CardGroup>

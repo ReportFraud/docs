@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Reporta API Documentation",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/light.png",
+    "light": "/logo/dark.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -30,18 +30,6 @@
       "url": "guides"
     }
   ],
-  "anchors": [
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://reporta.ng/blog"
-    }
-  ],
   "navigation": [
     {
       "group": "General",
@@ -50,10 +38,6 @@
     {
       "group": "Get Started",
       "pages": ["register", "create-api-key", "fund-wallet"]
-    },
-    {
-      "group": "API Documentation",
-      "pages": ["api-reference/introduction"]
     },
     {
       "group": "Report",
@@ -77,7 +61,13 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/introduction", "guides/search", "guides/faq"]
+      "pages": [
+        "guides/search",
+        {
+          "group": "Report",
+          "pages": ["guides/report/single-report", "guides/report/bulk-report"]
+        }
+      ]
     }
   ],
   "footerSocials": {
@@ -85,4 +75,5 @@
     "github": "https://github.com/mintlify",
     "linkedin": "https://linkedin.com/company/mintlify"
   }
+
 }

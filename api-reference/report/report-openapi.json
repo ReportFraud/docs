@@ -13,9 +13,9 @@
   "paths": {
     "/reports": {
       "post": {
-        "description": "Creates a fraud report",
+        "description": "Creates a report",
         "requestBody": {
-          "description": "Details of the fraud report",
+          "description": "Details of the report",
           "required": true,
           "content": {
             "application/json": {
@@ -43,8 +43,7 @@
                     "type": "string",
                     "description": "Reason for reporting the suspicious activity",
                     "maxLength": 2000,
-                    "minLength": 50,
-                    "example": "Hacked into a user's account and moved funds to his account in another bank"
+                    "minLength": 50
                   },
                   "attachments": {
                     "type": "array",
@@ -74,13 +73,11 @@
                             "phone",
                             "account_name",
                             "social_handle"
-                          ],
-                          "example": "bvn"
+                          ]
                         },
                         "value": {
                           "type": "string",
-                          "description": "Identifier value",
-                          "example": "12345678901"
+                          "description": "Identifier value"
                         }
                       },
                       "required": ["label", "value"]
@@ -119,7 +116,8 @@
                         "id": {
                           "type": "string",
                           "description": "Unique ID of the created report",
-                          "format": "uuid"
+                          "format": "uuid",
+                          "example": "<string>"
                         },
                         "listingStatus": {
                           "type": "string",

@@ -1,3 +1,30 @@
 ---
 title: 'API Response'
 ---
+
+All API responses from the Reporta platform follow a standardized format to ensure consistency and ease of integration. Below is the general structure of the response:
+
+```json
+{
+  "success": true,
+  "message": "<string>",
+  "data": {}
+}
+```
+
+
+The API returns responses for paginated data in the following format:
+
+```json
+{
+  "success": true,
+  "message": "<string>",
+  "data": {
+    "items": [],
+    "meta": {
+        "total": "<number>",
+        "page": "<number>",
+        "limit": "<number>"
+    }
+  }
+}
