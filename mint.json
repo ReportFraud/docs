@@ -33,11 +33,11 @@
   "navigation": [
     {
       "group": "General",
-      "pages": ["introduction", "response-codes", "api-response"]
+      "pages": ["introduction", "response-codes", "api-response", "faq"]
     },
     {
       "group": "Get Started",
-      "pages": ["register", "create-api-key", "fund-wallet"]
+      "pages": ["register", "create-api-key"]
     },
     {
       "group": "Report",
