@@ -1,0 +1,104 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Reporta API Documentation",
+  "colors": {
+    "primary": "#356EDC",
+    "light": "#356EDC",
+    "dark": "#356EDC"
+  },
+  "icons": {
+    "library": "fontawesome"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "General",
+            "pages": ["introduction", "response-codes", "api-response", "faq"]
+          },
+          {
+            "group": "Get Started",
+            "pages": ["register", "create-api-key"]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Report",
+            "pages": [
+              "api-reference/report/create-report",
+              "api-reference/report/bulk-upload-report",
+              "api-reference/report/get-submissions",
+              "api-reference/report/get-submission",
+              "api-reference/report/update-report",
+              "api-reference/report/unlist-report",
+              "api-reference/report/decode-submission",
+              "api-reference/report/search"
+            ]
+          },
+          {
+            "group": "Meta Data",
+            "pages": ["api-reference/meta-data/get-banks"]
+          },
+          {
+            "group": "File Upload",
+            "pages": [
+              "api-reference/file-upload/upload",
+              "api-reference/file-upload/delete"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/search",
+              {
+                "group": "Report",
+                "pages": [
+                  "guides/report/single-report",
+                  "guides/report/bulk-report"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/dark.png",
+    "dark": "/logo/light.png"
+  },
+  "navbar": {
+    "links": [],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://reporta.ng/login?for=corporate"
+    }
+  },
+  "background": {
+    "decoration": "grid"
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/reporta-insights/",
+      "website": "https://reporta.ng"
+    }
+  },
+  "api": {
+    "mdx": {
+      "server": "https://api-staging.reporta.ng/api/v1/external"
+    }
+  }
+}

@@ -5,11 +5,6 @@
     "description": "API to report suspected activity",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://api-staging.reporta.ng/api/v1/external"
-    }
-  ],
   "paths": {
     "/reports": {
       "post": {
@@ -661,6 +656,74 @@
           },
           "500": {
             "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/reports/bulk": {
+      "post": {
+        "description": "Bulk upload of reports",
+        "summary": "Upload multiple reports in a single request",
+        "requestBody": {
+          "description": "File to upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload"
+                  }
+                },
+                "required": ["file"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "File uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the operation was successful"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Status message describing the result"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "failedUploads": {
+                          "type": "array",
+                          "description": "List of failed uploads",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error"
           }
         },
         "security": [

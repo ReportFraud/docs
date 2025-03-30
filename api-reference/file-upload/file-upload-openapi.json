@@ -17,7 +17,9 @@
   "paths": {
     "/upload": {
       "post": {
-        "description": "Uploads a file using multipart/form-data",
+        "summary":"Upload a file",
+        "description": "Endpoint to upload a single file",
+        "operationId": "uploadFile",
         "requestBody": {
           "description": "File to upload",
           "content": {
