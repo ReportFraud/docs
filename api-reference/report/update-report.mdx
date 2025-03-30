@@ -1,4 +1,12 @@
 ---
 title: 'Update Report'
-openapi: 'GET /plants'
+openapi: './report-openapi.json PUT /reports/{id}'
 ---
+
+<Note>
+    If your identifier type is `account`, the value should be formatted as `accountNumber_bankSlug` (e.g., `1234567890_bca`).
+
+    You can obtain the bank slugs by:
+    - Calling our [Get Banks API](/api-reference/meta-data/get-banks)
+    - Referring to our [Bank Slugs Reference](https://docs.google.com/spreadsheets/d/1CXnREL3XRG6GoZIFOBOAysgIUogx2BQfSPVeCtWN9zk/edit?usp=sharing)
+</Note>

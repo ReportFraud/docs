@@ -215,6 +215,298 @@
         ]
       }
     },
+    "/reports/search": {
+      "post": {
+        "summary": "Search for reports by identifier",
+        "description": "Search for reports using a specific identifier type and value",
+        "requestBody": {
+          "description": "Search criteria",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "identifier": {
+                    "type": "string",
+                    "description": "Type of identifier to search",
+                    "enum": [
+                      "account",
+                      "bvn",
+                      "nin",
+                      "drivers_license",
+                      "international_passport",
+                      "email",
+                      "phone",
+                      "account_name",
+                      "social_handle"
+                    ]
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Value of the identifier to search for"
+                  }
+                },
+                "required": ["identifier", "value"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reports fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the search was successful"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Response message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "reports": {
+                          "type": "array",
+                          "description": "List of reports matching the search criteria",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Unique ID of the report"
+                              },
+                              "companyId": {
+                                "type": "string",
+                                "description": "ID of the company that reported the suspicious activity"
+                              },
+                              "userId": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "ID of the user who reported the suspicious activity"
+                              },
+                              "listingStatus": {
+                                "type": "string",
+                                "description": "Status of the report"
+                              },
+                              "exitedListAt": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "Timestamp of when the report was exited from the list"
+                              },
+                              "exitListReason": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "Reason for exiting the list"
+                              },
+                              "fraudType": {
+                                "type": "string",
+                                "description": "Type of fraud reported"
+                              },
+                              "fraudReason": {
+                                "type": "string",
+                                "description": "Reason for reporting the suspicious activity"
+                              },
+                              "showUploaderInfo": {
+                                "type": "boolean",
+                                "description": "Whether to show the uploader information"
+                              },
+                              "attachments": {
+                                "type": "array",
+                                "description": "List of attachments",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "status": {
+                                "type": "string",
+                                "description": "Status of the report",
+                                "enum": ["published", "draft"]
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the report was created"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the report was last updated"
+                              },
+                              "identifiers": {
+                                "type": "array",
+                                "description": "List of encrypted identifiers",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "description": "Unique ID of the identifier"
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "description": "Identifier label"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "description": "Encrypted identifier value"
+                                    }
+                                  },
+                                  "required": ["id", "label", "value"]
+                                }
+                              },
+                              "reportingCompany": {
+                                "type": "object",
+                                "properties": {
+                                  "businessName": {
+                                    "type": "string",
+                                    "description": "Name of the reporting company"
+                                  },
+                                  "id": {
+                                    "type": "string",
+                                    "description": "ID of the reporting company"
+                                  }
+                                },
+                                "required": ["businessName", "id"]
+                              }
+                            }
+                          }
+                        },
+                        "publicReports": {
+                          "type": "array",
+                          "description": "List of public reports matching the search criteria",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Unique ID of the report"
+                              },
+                              "userId": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "ID of the user who reported the suspicious activity"
+                              },
+                              "fraudReason": {
+                                "type": "string",
+                                "description": "Reason for reporting the suspicious activity"
+                              },
+                              "fraudType": {
+                                "type": "string",
+                                "description": "Type of fraud reported"
+                              },
+                              "attachments": {
+                                "type": "array",
+                                "description": "List of attachment URLs",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "financialInstitution": {
+                                "type": "string",
+                                "description": "Name of the financial institution involved"
+                              },
+                              "eventDate": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Date when the fraudulent event occurred"
+                              },
+                              "companyId": {
+                                "type": "string",
+                                "description": "ID of the company that reported the suspicious activity"
+                              },
+                              "notificationSent": {
+                                "type": "boolean",
+                                "description": "Whether notification has been sent"
+                              },
+                              "status": {
+                                "type": "string",
+                                "description": "Status of the report",
+                                "enum": ["published", "draft"]
+                              },
+                              "victim": {
+                                "type": "object",
+                                "nullable": true,
+                                "description": "Information about the victim"
+                              },
+                              "guestInfo": {
+                                "type": "object",
+                                "nullable": true,
+                                "description": "Information about the guest reporter"
+                              },
+                              "reportingEntity": {
+                                "type": "string",
+                                "description": "Entity that reported the incident",
+                                "enum": [
+                                  "self",
+                                  "witness",
+                                  "guest",
+                                  "representative"
+                                ]
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the report was created"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the report was last updated"
+                              },
+                              "identifiers": {
+                                "type": "array",
+                                "description": "List of encrypted identifiers",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "description": "Unique ID of the identifier"
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "description": "Identifier label"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "description": "Encrypted identifier value"
+                                    }
+                                  },
+                                  "required": ["id", "label", "value"]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["reports", "publicReports"]
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid search parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
     "/reports/submissions": {
       "get": {
         "summary": "Fetches reports submissions",
@@ -655,6 +947,224 @@
                 }
               }
             }
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/reports/{id}": {
+      "put": {
+        "description": "Updates an existing report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the report to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Details of the report to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fraudType": {
+                    "type": "string",
+                    "description": "Type of suspicious activity",
+                    "enum": [
+                      "hacker",
+                      "identity_theft",
+                      "money_mule",
+                      "suspicious_pep",
+                      "sanctioned/ofac",
+                      "theft",
+                      "fraudulent_loan",
+                      "social_engineering",
+                      "other",
+                      "romance_fraud",
+                      "land_property_scams"
+                    ]
+                  },
+                  "fraudReason": {
+                    "type": "string",
+                    "description": "Reason for reporting the suspicious activity",
+                    "maxLength": 2000,
+                    "minLength": 50
+                  },
+                  "attachments": {
+                    "type": "array",
+                    "description": "Maximum of three links to uploaded files. Use the upload endpoint to upload the files and include the returned URLs here.",
+                    "items": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "maxItems": 3
+                  },
+                  "identifiers": {
+                    "type": "array",
+                    "description": "Array of identifiers to describe the fraud",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "description": "Identifier label",
+                          "enum": [
+                            "account",
+                            "bvn",
+                            "nin",
+                            "drivers_license",
+                            "international_passport",
+                            "email",
+                            "phone",
+                            "account_name",
+                            "social_handle"
+                          ]
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Identifier value"
+                        }
+                      },
+                      "required": ["label", "value"]
+                    }
+                  },
+                  "showUploaderInfo": {
+                    "type": "string",
+                    "enum": ["true", "false"],
+                    "description": "Whether to show the uploader information, defaults to false"
+                  }
+                },
+                "required": ["fraudType", "fraudReason", "identifiers"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fraud report updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the report was successfully updated"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Response message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Unique ID of the updated report",
+                          "format": "uuid",
+                          "example": "<string>"
+                        },
+                        "listingStatus": {
+                          "type": "string",
+                          "description": "Status of the report",
+                          "enum": ["listed", "unlisted"]
+                        },
+                        "exitedListAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Timestamp of when the report was exited from the list",
+                          "format": "date-time"
+                        },
+                        "exitListReason": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Reason for exiting the list"
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "Status of the report, can be published or draft. Default is published",
+                          "enum": ["published", "draft"]
+                        },
+                        "fraudType": {
+                          "type": "string",
+                          "description": "Type of fraud reported"
+                        },
+                        "fraudReason": {
+                          "type": "string",
+                          "description": "Reason for reporting the suspicious activity"
+                        },
+                        "reportedBy": {
+                          "type": "string",
+                          "description": "ID of the user who reported the suspicious activity"
+                        },
+                        "companyId": {
+                          "type": "string",
+                          "description": "ID of the company that reported the suspicious activity"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp when the report was last updated"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp when the report was created"
+                        },
+                        "identifiers": {
+                          "type": "array",
+                          "description": "List of encrypted identifiers",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "description": "Identifier label"
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "Encrypted identifier value"
+                              }
+                            },
+                            "required": ["label", "value"]
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "listingStatus",
+                        "exitedListAt",
+                        "exitListReason",
+                        "status",
+                        "fraudType",
+                        "fraudReason",
+                        "attachments",
+                        "identifiers",
+                        "showUploaderInfo",
+                        "companyId",
+                        "updatedAt",
+                        "createdAt"
+                      ]
+                    }
+                  },
+                  "required": ["success", "message", "data"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Report not found"
           }
         },
         "security": [
