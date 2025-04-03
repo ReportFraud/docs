@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://api-staging.reporta.ng/api/v1/meta-data"
+      "url": "https://api.reporta.ng/api/v1/meta-data"
     }
   ],
   "paths": {
