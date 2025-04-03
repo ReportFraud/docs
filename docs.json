@@ -98,7 +98,7 @@
   },
   "api": {
     "mdx": {
-      "server": "https://api-staging.reporta.ng/api/v1/external"
+      "server": "https://api.reporta.ng/api/v1/external"
     }
   }
 }
